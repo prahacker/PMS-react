@@ -302,6 +302,3 @@ Create an `.env` file in the `chartjs-api` directory with the following variable
 
 Contributions are welcome! Please fork this repository and submit a pull request with your changes.
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
