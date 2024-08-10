@@ -1,0 +1,95 @@
+.App-header {
+  background-color: #282c34;
+  padding: 20px;
+  color: white;
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+.app {
+  background-color: #1e1e2f;
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+
+.chart-card {
+  background-color: #2a2a3d;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.chart-card:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.buttons {
+  margin-top: 20px;
+}
+
+button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+
+
+/* App.css */
+body {
+  background-color: #121212; /* Dark background for the entire page */
+  color: white; /* Light text for better readability */
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.app {
+  padding: 20px;
+}
+
+.chart-card {
+  cursor: pointer;
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 600px; /* Set appropriate max width for smaller chart view */
+}
+
+.modal {
+  width: 100vw;
+  height: 100vh;
+  background-color: #121212; /* Ensuring modal also follows dark theme */
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+button {
+  background-color: #333;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button:hover {
+  opacity: 0.9;
+}
