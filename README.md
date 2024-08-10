@@ -21,6 +21,11 @@ This application is a financial dashboard that allows users to view charts, sign
   - [View Financial Charts](#view-financial-charts)
   - [Manage Profile](#manage-profile)
   - [Run Driver Script](#run-driver-script)
+- [Driver and SQL Script Explanation](#driver-and-sql-script-explanation)
+  - [driver.py](#driverpy)
+  - [sql.py](#sqlpy)
+  - [Integration with the Dashboard](#integration-with-the-dashboard)
+  - [Example Workflow](#example-workflow)
 - [Environment Variables](#environment-variables)
 - [Contributing](#contributing)
 - [License](#license)
@@ -216,6 +221,70 @@ The frontend will start on port 3000.
 ### Run Driver Script
 
 - In the dashboard, click the "Run Driver Script" button to trigger the custom script.
+
+## Driver and SQL Script Explanation
+
+The application includes two Python scripts, `driver.py` and `sql.py`, which are designed to interact with the backend database and automate certain tasks.
+
+### driver.py
+
+`driver.py` is a Python script designed to automate the collection or processing of financial data using Selenium. This script might be used to scrape data from financial websites, process it, and then insert or update records in the MySQL database.
+
+**Key Components:**
+
+- **Selenium WebDriver:** The script uses Selenium WebDriver to automate web interactions, such as navigating to web pages, filling out forms, or scraping data.
+- **Data Processing:** The script processes the scraped data to prepare it for insertion into the database.
+- **MySQL Integration:** The script may connect to the MySQL database and insert or update records based on the data it has processed.
+
+**How to Run:**
+
+1. Ensure you have installed the required Python dependencies as outlined in the Selenium Setup section.
+2. Ensure that ChromeDriver is correctly installed and configured.
+3. Run the script using Python:
+
+    ```bash
+    python driver.py
+    ```
+
+### sql.py
+
+`sql.py` is a Python script that directly interacts with the MySQL database. It could be used for tasks such as:
+
+- Inserting new financial data into the database.
+- Updating existing records.
+- Running complex SQL queries and processing the results.
+
+**Key Components:**
+
+- **MySQL Connector:** The script uses MySQL connectors like `mysql-connector-python` or `PyMySQL` to establish a connection with the MySQL database.
+- **SQL Queries:** The script contains SQL queries to insert, update, or retrieve data from the database.
+- **Data Processing:** After retrieving data, the script processes it as needed (e.g., calculating returns, formatting results).
+
+**How to Run:**
+
+1. Ensure you have installed the required Python dependencies:
+
+    ```bash
+    pip install mysql-connector-python
+    ```
+
+2. Configure the MySQL connection details (host, user, password, database) within the script, if necessary.
+3. Run the script using Python:
+
+    ```bash
+    python sql.py
+    ```
+
+### Integration with the Dashboard
+
+- The **Run Driver Script** button in the dashboard triggers the `driver.py` script via a backend API call. The backend listens for this request and executes the script, updating the database with the latest data.
+- The data manipulated by `driver.py` and `sql.py` is reflected in the financial charts displayed on the dashboard.
+
+### Example Workflow
+
+1. `driver.py` scrapes the latest financial data from a website.
+2. It processes the data and uses SQL queries to update the `admin` database.
+3. When a user views the financial charts on the dashboard, the data displayed reflects the most recent updates made by `driver.py`.
 
 ## Environment Variables
 
