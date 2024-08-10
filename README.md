@@ -21,6 +21,7 @@ This application is a financial dashboard that allows users to view charts, sign
   - [View Financial Charts](#view-financial-charts)
   - [Manage Profile](#manage-profile)
   - [Run Driver Script](#run-driver-script)
+  - [FullScreenGraph Component](#fullscreengraph-component)
 - [Driver and SQL Script Explanation](#driver-and-sql-script-explanation)
   - [driver.py](#driverpy)
   - [sql.py](#sqlpy)
@@ -231,6 +232,29 @@ The frontend will start on port 3000.
 ### Run Driver Script
 
 - In the dashboard, click the "Run Driver Script" button to trigger the custom script.
+
+## FullScreenGraph Component
+
+The `FullScreenGraph.js` component is responsible for displaying detailed views of various financial charts such as One Day Returns, Sensex, and Nifty 50. It provides an immersive full-screen experience for users who want to closely analyze their financial data.
+
+### Key Features
+
+- **Dynamic Chart Display:** The chart type is dynamically determined based on the route parameter, allowing the same component to display different financial charts.
+- **Interactive Data Points:** Users can interact with data points on the chart, particularly on the One Day Returns chart, to get more detailed comparisons between data points.
+- **Responsive Design:** The chart automatically adjusts to fit the screen size, ensuring an optimal viewing experience on all devices.
+
+### How It Works
+
+- **Fetching Data:** The component fetches chart data from the backend API using an authorization token stored in `localStorage`. This ensures that only authenticated users can access the data.
+  
+- **Rendering Charts:** Based on the `chartType` parameter in the URL, the component formats the fetched data to render the appropriate chart (e.g., One Day Returns, Sensex, Nifty 50). It uses the `react-chartjs-2` library to display the charts.
+
+- **Data Interaction:** For the One Day Returns chart, users can click on data points to view a detailed comparison between the selected point and the previous one, including changes in Sensex and portfolio returns.
+
+- **Navigation:** The component provides a "Back" button that allows users to return back to home page.
+
+<img width="1919" alt="Screenshot 2024-08-10 at 4 04 30 PM" src="https://github.com/user-attachments/assets/fc8beaf1-c243-4055-bd1d-e6898e67aa23">
+
  
 ## Driver and SQL Script Explanation
 
