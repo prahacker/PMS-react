@@ -179,8 +179,10 @@ Start the backend server:
 
 ```bash
 cd chartjs-api
-npm start
+node server.js
 ```
+<img width="862" alt="Screenshot 2024-08-10 at 7 45 07 PM" src="https://github.com/user-attachments/assets/fa557987-9d05-4c4f-8d8b-9bbfb9dc902d">
+
 
 The server will start on port 3001.
 
@@ -192,6 +194,7 @@ Start the React development server:
 cd ../react-script-trigger
 npm start
 ```
+<img width="965" alt="Screenshot 2024-08-10 at 7 45 47 PM" src="https://github.com/user-attachments/assets/b80cc4f6-2b17-4a2d-b784-6cb2e7561370">
 
 The frontend will start on port 3000.
 
@@ -202,26 +205,33 @@ The frontend will start on port 3000.
 - Open the app in your browser: `http://localhost:3000`.
 - Click on the "Sign Up" button and fill in the required fields (Name, Email, Username, Password).
 - Submit the form to create a new account.
+<img width="1920" alt="Screenshot 2024-08-10 at 4 03 42 PM" src="https://github.com/user-attachments/assets/bcbbb794-aa9f-4887-8c3a-e8c79faa7a9f">
 
 ### Log In
 
 - On the login page, enter your username/email and password.
 - Click "Login" to access the dashboard.
+<img width="1920" alt="Screenshot 2024-08-10 at 4 03 32 PM" src="https://github.com/user-attachments/assets/f5821de6-07f6-4e8c-84d5-df9b0d69c466">
 
 ### View Financial Charts
 
 - After logging in, you will see different charts (One Day Returns, Sensex, Nifty 50).
 - Click on any chart to view it in full screen.
+- <img width="1917" alt="Screenshot 2024-08-10 at 4 04 07 PM" src="https://github.com/user-attachments/assets/bc656658-a95f-465d-8903-743b897a2c84">
+<img width="1920" alt="Screenshot 2024-08-10 at 4 04 16 PM" src="https://github.com/user-attachments/assets/eaebe22a-81d6-49a0-847a-d23ca6bcb46f">
+
 
 ### Manage Profile
 
 - Click on the user icon in the top-right corner and select "Profile".
 - You can view your profile information and delete your account.
+  <img width="1917" alt="Screenshot 2024-08-10 at 4 04 47 PM" src="https://github.com/user-attachments/assets/04b5050b-276d-4ad1-b5ab-bda865039fe8">
+
 
 ### Run Driver Script
 
 - In the dashboard, click the "Run Driver Script" button to trigger the custom script.
-
+ 
 ## Driver and SQL Script Explanation
 
 The application includes two Python scripts, `driver.py` and `sql.py`, which are designed to interact with the backend database and automate certain tasks.
@@ -229,6 +239,8 @@ The application includes two Python scripts, `driver.py` and `sql.py`, which are
 ### driver.py
 
 `driver.py` is a Python script designed to automate the collection or processing of financial data using Selenium. This script might be used to scrape data from financial websites, process it, and then insert or update records in the MySQL database.
+
+<img width="930" alt="Screenshot 2024-08-10 at 7 46 37 PM" src="https://github.com/user-attachments/assets/39b4e995-03f2-4c80-9f18-1b57b42714b5">
 
 **Key Components:**
 
@@ -240,7 +252,7 @@ The application includes two Python scripts, `driver.py` and `sql.py`, which are
 
 1. Ensure you have installed the required Python dependencies as outlined in the Selenium Setup section.
 2. Ensure that ChromeDriver is correctly installed and configured.
-3. Run the script using Python:
+3. To test run the script using Python:
 
     ```bash
     python driver.py
@@ -269,7 +281,7 @@ The application includes two Python scripts, `driver.py` and `sql.py`, which are
     ```
 
 2. Configure the MySQL connection details (host, user, password, database) within the script, if necessary.
-3. Run the script using Python:
+3. To test run the script using Python:
 
     ```bash
     python sql.py
