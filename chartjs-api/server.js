@@ -3,6 +3,7 @@ const mysql = require('mysql');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const fs = require('fs'); // To handle file operations
 const { exec } = require('child_process'); // To run scripts
 
 const app = express();
@@ -44,6 +45,16 @@ adminDb.connect((err) => {
   console.log('Connected to MySQL admin database');
 });
 
+// Function to write token to file
+const writeTokenToFile = (token) => {
+  const tokenFilePath = '/Users/prakhartripathi/chartjs-api/token.txt';
+  fs.writeFile(tokenFilePath, token, (err) => {
+    if (err) {
+      console.error('Error writing token to file:', err);
+    }
+  });
+};
+
 // Signup API
 app.post('/signup', (req, res) => {
   const { name, email_id, username, password } = req.body;
@@ -68,7 +79,30 @@ app.post('/signup', (req, res) => {
         console.error('Error inserting user into the database:', err);
         return res.status(500).send('Internal server error');
       }
-      res.status(200).send('Signup successful');
+
+      // Create a new table for the user in the admin database
+      const createTableSql = `
+        CREATE TABLE \`${username}\` (
+          id INT AUTO_INCREMENT PRIMARY KEY,
+          total_return_text VARCHAR(255) NOT NULL,
+          one_day_return_text VARCHAR(255) NOT NULL,
+          nifty50 VARCHAR(255) NOT NULL,
+          sensex VARCHAR(255) NOT NULL,
+          date DATETIME NOT NULL
+        )
+      `;
+      adminDb.query(createTableSql, (err, result) => {
+        if (err) {
+          console.error('Error creating user-specific table in admin database:', err);
+          return res.status(500).send('Internal server error');
+        }
+
+        // Generate token and write to file
+        const token = jwt.sign({ id: username }, 'your_jwt_secret', { expiresIn: '1h' });
+        writeTokenToFile(token);
+
+        res.status(200).send('Signup successful');
+      });
     });
   });
 });
@@ -97,12 +131,15 @@ app.post('/login', (req, res) => {
       return res.status(400).send('Invalid username or password');
     }
 
+    // Generate token and write to file
     const token = jwt.sign({ id: user.username }, 'your_jwt_secret', { expiresIn: '1h' });
+    writeTokenToFile(token);
+
     res.status(200).json({ token });
   });
 });
 
-// API to fetch data from the admin database
+// API to fetch data from the user-specific table in the admin database
 app.get('/api/data', (req, res) => {
   const token = req.headers.authorization?.split(' ')[1];
 
@@ -112,11 +149,12 @@ app.get('/api/data', (req, res) => {
 
   try {
     const decoded = jwt.verify(token, 'your_jwt_secret');
+    const username = decoded.id; // Extract the username from the token
 
-    const query = 'SELECT id, total_return_text, one_day_return_text, nifty50, sensex, date FROM records';
+    const query = `SELECT id, total_return_text, one_day_return_text, nifty50, sensex, date FROM \`${username}\``;
     adminDb.query(query, (err, results) => {
       if (err) {
-        console.error('Error fetching data from admin database:', err);
+        console.error('Error fetching data from user-specific table in admin database:', err);
         return res.status(500).send('Internal server error');
       }
 
@@ -145,6 +183,7 @@ app.get('/api/data', (req, res) => {
     res.status(400).send('Invalid token');
   }
 });
+
 // Profile API
 app.get('/profile', (req, res) => {
   const token = req.headers.authorization?.split(' ')[1];
@@ -174,6 +213,20 @@ app.get('/profile', (req, res) => {
     res.status(400).send('Invalid token');
   }
 });
+// Save token to token.txt
+app.post('/save-token', (req, res) => {
+  const { token } = req.body;
+  const tokenFilePath = '/Users/prakhartripathi/chartjs-api/token.txt';
+  
+  try {
+    fs.writeFileSync(tokenFilePath, token);
+    res.status(200).send('Token saved successfully');
+  } catch (err) {
+    console.error('Error saving token:', err);
+    res.status(500).send('Failed to save token');
+  }
+});
+
 // API to delete user account
 app.delete('/delete-account', (req, res) => {
   const token = req.headers.authorization?.split(' ')[1];
@@ -186,20 +239,28 @@ app.delete('/delete-account', (req, res) => {
     const decoded = jwt.verify(token, 'your_jwt_secret');
     const username = decoded.id;
 
-    // Delete the user from the database
-    usersDb.query('DELETE FROM user WHERE username = ?', [username], (err, result) => {
+    // Delete the user-specific table in the admin database
+    const dropTableSql = `DROP TABLE IF EXISTS \`${username}\``;
+    adminDb.query(dropTableSql, (err, result) => {
       if (err) {
-        console.error('Error deleting user from the database:', err);
+        console.error('Error deleting user-specific table from admin database:', err);
         return res.status(500).send('Internal server error');
       }
 
-      res.status(200).send('Account deleted successfully');
+      // Delete the user from the users database
+      usersDb.query('DELETE FROM user WHERE username = ?', [username], (err, result) => {
+        if (err) {
+          console.error('Error deleting user from the database:', err);
+          return res.status(500).send('Internal server error');
+        }
+
+        res.status(200).send('Account and associated data deleted successfully');
+      });
     });
   } catch (ex) {
     res.status(400).send('Invalid token');
   }
 });
-
 
 // Run script API
 app.get('/run-script', (req, res) => {
@@ -212,7 +273,7 @@ app.get('/run-script', (req, res) => {
   try {
     const decoded = jwt.verify(token, 'your_jwt_secret');
 
-    exec('python /Users/prakhartripathi/chartjs-api/driver.py', (error, stdout, stderr) => {
+    exec('python /path/to/driver.py', (error, stdout, stderr) => {
       if (error) {
         console.error(`Error executing script: ${error}`);
         return res.status(500).send('Failed to execute script');
