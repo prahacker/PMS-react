@@ -2,8 +2,8 @@ import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Line } from 'react-chartjs-2';
 import 'chart.js/auto';
-import logo from '/Users/prakhartripathi/react-script-trigger/src/assets/logo.webp';
-import userIcon from '/Users/prakhartripathi/react-script-trigger/src/assets/user.webp';
+import logo from '/path/to/react-script-trigger/src/assets/logo.webp';
+import userIcon from '/path/to/react-script-trigger/src/assets/user.webp';
 import './App.css';
 
 function MainPage() {
@@ -13,8 +13,6 @@ function MainPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [formState, setFormState] = useState({ usernameOrEmail: '', password: '' });
   const navigate = useNavigate();
   const dropdownRef = useRef(null);
 
@@ -48,10 +46,10 @@ function MainPage() {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    if (token) {
-      setIsAuthenticated(true);
+    if (!token) {
+      navigate('/login');  // Redirect to login if not authenticated
     }
-  }, []);
+  }, [navigate]);
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -72,29 +70,10 @@ function MainPage() {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
-    setIsAuthenticated(false);
-    navigate('/');
-  };
-
-  const handleLogin = async () => {
-    try {
-      const response = await fetch('http://localhost:3001/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          usernameOrEmail: formState.usernameOrEmail,
-          password: formState.password
-        })
-      });
-      if (!response.ok) {
-        throw new Error('Login failed');
-      }
-      const { token } = await response.json();
-      localStorage.setItem('token', token);
-      setIsAuthenticated(true);
-    } catch (error) {
-      alert(error.message);
-    }
+    setOneDayReturnData(null);
+    setSensexData(null);
+    setNifty50Data(null);
+    navigate('/login');
   };
 
   const runDriverScript = async () => {
@@ -161,30 +140,6 @@ function MainPage() {
   const handleChartClick = (chartType) => {
     navigate(`/full-graph/${chartType}`);
   };
-
-  if (!isAuthenticated) {
-    return (
-      <div className="auth-container">
-        <div className="auth-form">
-          <h2>Login</h2>
-          <input
-            type="text"
-            name="usernameOrEmail"
-            placeholder="Username or Email"
-            onChange={(e) => setFormState({ ...formState, usernameOrEmail: e.target.value })}
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            onChange={(e) => setFormState({ ...formState, password: e.target.value })}
-          />
-          <button onClick={handleLogin}>Login</button>
-          <button onClick={() => navigate('/signup')}>Create an Account</button>
-        </div>
-      </div>
-    );
-  }
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
