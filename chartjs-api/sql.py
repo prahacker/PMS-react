@@ -24,14 +24,14 @@ def get_username_from_token(token):
 
 # Function to read the token from a file (assumes the token is stored in a file called token.txt)
 def read_token_from_file():
-    token_file_path = "/Users/prakhartripathi/chartjs-api/token.txt"
+    token_file_path = "/path/to/token.txt"
     if os.path.exists(token_file_path):
         with open(token_file_path, "r") as file:
             return file.read().strip()
     return None
 
 # Path to the data file
-data_file_path = "/Users/prakhartripathi/chartjs-api/data.txt"
+data_file_path = "/path/to/data.txt"
 
 # Read data from the file
 data = {}
