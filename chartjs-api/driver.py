@@ -43,7 +43,7 @@ print(f"Sensex Value: {sensex_value}")
 
 
 # Now click on the "Investments" link
-max_attempts = 20
+max_attempts = 30
 attempt = 0
 found_investments_link = False
 
@@ -74,7 +74,7 @@ while attempt < max_attempts:
 if found_investments_link:
     # Wait for the investments page to load
     print("Waiting for the returns data to be present...")
-    WebDriverWait(driver, 30).until(
+    WebDriverWait(driver, 40).until(
         EC.presence_of_element_located((By.XPATH, "//div[contains(@class, 'stock-investments_stockInvLabel__ehYoT') and text()='Total Returns']/following-sibling::div"))
     )
     print("Returns data is visible.")
@@ -91,11 +91,12 @@ if found_investments_link:
 
     # Save the data to a file for sql.py
     with open("/Users/prakhartripathi/chartjs-api/data.txt", "w") as file:
-        file.write(f"nifty50_value={nifty50_value}\n")
         file.write(f"total_return_text={total_return_text}\n")
         file.write(f"one_day_return_text={one_day_return_text}\n")
+        file.write(f"nifty50_value={nifty50_value}\n")
+        file.write(f"sensex_value={sensex_value}\n")
         file.write(f"timestamp={date}\n")
-
+        
     print("Data saved to data.txt. Executing sql.py...")
 
     # Execute sql.py
