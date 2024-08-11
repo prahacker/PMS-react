@@ -27,6 +27,7 @@ function Login() {
       const { token } = await response.json();
       localStorage.setItem('token', token);
       navigate('/'); // Redirect to the main page after successful login
+      window.location.reload(); // Force a page reload to clear old data
     } catch (error) {
       setError(error.message);
     }
