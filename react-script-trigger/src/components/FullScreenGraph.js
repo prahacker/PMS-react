@@ -18,7 +18,7 @@ function FullScreenGraph() {
     const fetchGraphData = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch('http://localhost:3001/api/data', {
+        const response = await fetch('http://localhost:<port>(3001)/api/data', {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -59,7 +59,7 @@ function FullScreenGraph() {
           };
         } else if (chartType === 'sensex') {
           const sensexValues = result.map(item => item.sensex);
-          const latestSensex = sensexValues[sensexValues.length - 1];
+          const latestSensex = sensexValues.length ? sensexValues[sensexValues.length - 1] : null;
 
           chartData = {
             labels: result.map(item => item.label),
@@ -83,17 +83,17 @@ function FullScreenGraph() {
               scales: {
                 y: {
                   beginAtZero: false,
-                  suggestedMin: latestSensex - 5000,
-                  suggestedMax: latestSensex + 5000,
+                  suggestedMin: latestSensex ? latestSensex - 5000 : undefined,
+                  suggestedMax: latestSensex ? latestSensex + 5000 : undefined,
                 },
               },
             },
           };
 
-          setLatestPrice(`Sensex: ₹${latestSensex.toLocaleString()}`);
+          setLatestPrice(latestSensex ? `Sensex: ₹${latestSensex.toLocaleString()}` : 'No data available');
         } else if (chartType === 'nifty50') {
           const nifty50Values = result.map(item => item.nifty50);
-          const latestNifty50 = nifty50Values[nifty50Values.length - 1];
+          const latestNifty50 = nifty50Values.length ? nifty50Values[nifty50Values.length - 1] : null;
 
           chartData = {
             labels: result.map(item => item.label),
@@ -117,14 +117,14 @@ function FullScreenGraph() {
               scales: {
                 y: {
                   beginAtZero: false,
-                  suggestedMin: latestNifty50 - 500,
-                  suggestedMax: latestNifty50 + 500,
+                  suggestedMin: latestNifty50 ? latestNifty50 - 500 : undefined,
+                  suggestedMax: latestNifty50 ? latestNifty50 + 500 : undefined,
                 },
               },
             },
           };
 
-          setLatestPrice(`Nifty 50: ₹${latestNifty50.toLocaleString()}`);
+          setLatestPrice(latestNifty50 ? `Nifty 50: ₹${latestNifty50.toLocaleString()}` : 'No data available');
         }
 
         setData(chartData);
