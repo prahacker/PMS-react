@@ -3,10 +3,10 @@ import os
 import jwt
 
 # Database connection details
-db_user = 'admin'
-db_password = 'admin12345678'
-db_host = 'testgroww.cxgwkco2aeaf.ap-south-1.rds.amazonaws.com'
-db_name = 'admin'
+db_user = ''
+db_password = ''
+db_host = ''
+db_name = ''
 
 # JWT secret to decode the token
 jwt_secret = 'your_jwt_secret'
